@@ -51,17 +51,50 @@ def create_employee():
     else:
         return 'Bad Request', 400
 
+@app.route('/employee', methods=['PUT'])
+def update_employee():
+    if not request.data:
+        return 'Bad Request', 400
+    body = request.get_json()
+    try:
+        eid = body["id"]
+        print(eid)
+        employee = Employee.query.filter_by(_id=eid).first()
+        print(employee)
+        for (key,value) in body.items():
+            print(key)
+            if not key == "id": setattr(employee,key,value)
+        db.session.commit()
+        return  json.dumps(employee.serialize), 200, {'Content-Type': 'application/json'}
+    except KeyError as err:
+        return 'Field ' +  str(err) + ' is missing.', 400
+    else:
+        return 'Bad Request', 400
+
+@app.route('/employee/<int:id>', methods=['DELETE'])
+def del_employee(id):
+    try:
+        Employee.query.filter_by(_id=id).delete()
+        db.session.commit()
+        return "User " + str(id) + " REMOVED.", 200
+    except BaseException as err:
+        print(err)
+        return "ERROR: " + str(err), 200
+
 @app.route('/employee', methods=['GET'])
 def get_employee():
     nome = request.args.get('nome')
     idade = request.args.get('idade')
     cargo = request.args.get('cargo')
+    args = {}
     if(cargo):
-        pessoas = Employee.query.filter_by(cargo=cargo)
+        args["cargo"] = cargo
     if(idade):
-        pessoas = Employee.query.filter_by(idade=idade)
+        args["idade"] = idade
+    pessoas = Employee.query.filter_by(**args)
     if(nome):
-        pessoas = Employee.query.filter(Employee.nome.contains(nome))
+        pessoas = pessoas.filter(Employee.nome.contains(nome))
+    
     return json.dumps([pessoa.serialize for pessoa in pessoas]), 200, {'Content-Type': 'application/json'}
 
 @app.teardown_appcontext
