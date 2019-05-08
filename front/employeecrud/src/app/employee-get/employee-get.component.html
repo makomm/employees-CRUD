@@ -1,0 +1,26 @@
+<label> Filtar por cargo:
+  <select (change)="filterEmployee()">
+    <option value={{null}}>Todos</option>
+    <option *ngFor="let cargo of cargos" value={{cargo}}>{{cargo}}</option>
+  </select>
+</label>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <td>Nome</td>
+      <td>Idade</td>
+      <td>Cargo</td>
+      <!-- <td colspan="2">Actions</td> -->
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let employee of employees">
+      <td>{{ employee.nome }}</td>
+      <td>{{ employee.idade }}</td>
+      <td>{{ employee.cargo }}</td>
+      <!-- <td><a [routerLink]="['/edit', employee.id]" class="btn btn-primary">Edit</a></td>
+            <td><a [routerLink]="" class="btn btn-danger">Delete</a></td> -->
+    </tr>
+  </tbody>
+</table>
