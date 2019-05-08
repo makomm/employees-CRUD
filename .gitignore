@@ -116,3 +116,4 @@ dmypy.json
 # env
 crudemployee/
 .vscode/
+node_modules/
