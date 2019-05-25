@@ -21,15 +21,19 @@ export class EmployeeGetComponent implements OnInit {
   }
 
   deleteEmployee(id) {
-    this.es.deleteEmployee(id).subscribe();
+    this.es.deleteEmployee(id).subscribe(c=>this.getData());
   }
 
-  ngOnInit() {
+  getData() {
     this.es.getEmployees().subscribe((data: Employee[]) => {
       this.employees = data;
     });
     this.es.getCargos().subscribe((data: any) => {
       this.cargos = data.items;
     });
+  }
+
+  ngOnInit() {
+    this.getData();
   }
 }

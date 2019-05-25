@@ -17,9 +17,25 @@ export class EmployeeService {
     return this.http.post(this.uri, body);
       
   }
+
+  updateEmployee(nome, idade, cargo,id) {
+    const body = {
+      nome,
+      idade,
+      cargo,
+      id
+    };
+    return this.http.put(this.uri, body);
+      
+  }
+
   getEmployees(cargo = null) {
     const params = cargo ? `?cargo=${cargo}` : '';
     return this.http.get(`${this.uri}${params}`);
+  }
+
+  getEmployee(id=null){
+    return this.http.get(`${this.uri}?id=${id}`);
   }
 
   getCargos() {
@@ -27,6 +43,6 @@ export class EmployeeService {
   }
 
   deleteEmployee(id = null) {
-    return this.http.delete(`${this.uri}/${id}`);
+    return this.http.delete(`${this.uri}/${id}`,{responseType:'text'});
   }
 }

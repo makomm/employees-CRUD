@@ -10,7 +10,7 @@
       <td>Nome</td>
       <td>Idade</td>
       <td>Cargo</td>
-      <!-- <td colspan="2">Actions</td> -->
+      <td colspan="2">Actions</td>
     </tr>
   </thead>
 
@@ -19,8 +19,8 @@
       <td>{{ employee.nome }}</td>
       <td>{{ employee.idade }}</td>
       <td>{{ employee.cargo }}</td>
-      <!-- <td><a [routerLink]="['/edit', employee.id]" class="btn btn-primary">Edit</a></td>
-            <td><a [routerLink]="" class="btn btn-danger">Delete</a></td> -->
+      <td><a [routerLink]="['/employee/edit', employee.id]" class="btn btn-primary">Edit</a></td>
+      <td><a (click)="deleteEmployee(employee.id)" class="btn btn-danger">Delete</a></td>
     </tr>
   </tbody>
 </table>
