@@ -5,11 +5,11 @@ services:
       context: api/
       dockerfile: Dockerfile
     ports:
-      - 4200:80
+      - 3000:80
   front:
     build:
       context: front/
       dockerfile: Dockerfile
     ports:
-      - 3000:4200
+      - 4200:4200
       
