@@ -117,3 +117,4 @@ dmypy.json
 crudemployee/
 .vscode/
 node_modules/
+envapi/

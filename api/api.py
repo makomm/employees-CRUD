@@ -77,13 +77,16 @@ def get_employee():
     nome = request.args.get('nome')
     idade = request.args.get('idade')
     cargo = request.args.get('cargo')
-    
-    args = {}
-    if(cargo): args["cargo"] = cargo
-    if(idade): args["idade"] = idade
-    pessoas = Employee.query.filter_by(**args)
-    if (nome): pessoas = pessoas.filter(Employee.nome.contains(nome))
-    app.logger.info('Employees retrieved.')
+    id = request.args.get('id')
+    if(id): 
+        pessoas = Employee.query.filter_by(_id=id)
+    else:
+        args = {}
+        if(cargo): args["cargo"] = cargo
+        if(idade): args["idade"] = idade
+        pessoas = Employee.query.filter_by(**args)
+        if (nome): pessoas = pessoas.filter(Employee.nome.contains(nome))
+        app.logger.info('Employees retrieved.')
     return json.dumps([pessoa.serialize for pessoa in pessoas]), 200, {'Content-Type': 'application/json'}
 
 @app.route('/employee/cargos', methods=['GET'])
