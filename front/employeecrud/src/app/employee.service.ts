@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class EmployeeService {
-  uri = 'http://localhost:4200/employee';
+  uri = 'http://localhost:3000/employee';
   constructor(private http: HttpClient) { }
 
   createEmployee(nome, idade, cargo) {
@@ -14,8 +14,8 @@ export class EmployeeService {
       idade,
       cargo
     };
-    this.http.post(this.uri, body)
-      .subscribe(res => console.log('Cadastrado!'));
+    return this.http.post(this.uri, body);
+      
   }
   getEmployees(cargo = null) {
     const params = cargo ? `?cargo=${cargo}` : '';
@@ -24,5 +24,9 @@ export class EmployeeService {
 
   getCargos() {
     return this.http.get(`${this.uri}/cargos`);
+  }
+
+  deleteEmployee(id = null) {
+    return this.http.delete(`${this.uri}/${id}`);
   }
 }
