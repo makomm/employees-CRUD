@@ -1,6 +1,3 @@
-#### TODO:
-## Add size and pagination to get methods
-
 import os
 import json
 from flask import Flask, g, request, send_file
@@ -73,13 +70,15 @@ def del_employee(id):
         return response, 200
     except BaseException as err:
         app.logger.error("ERROR: " + str(err))
-        return "ERROR: " + str(err), 200
+        return "ERROR: " + str(err), 500
 
 @app.route('/employee', methods=['GET'])
 def get_employee():
     nome = request.args.get('nome')
     idade = request.args.get('idade')
     cargo = request.args.get('cargo')
+    page = request.args.get('page') or 1
+    size = request.args.get('size') or 10
     id = request.args.get('id')
     if(id): 
         pessoas = Employee.query.filter_by(_id=id)
@@ -90,7 +89,15 @@ def get_employee():
         pessoas = Employee.query.filter_by(**args)
         if (nome): pessoas = pessoas.filter(Employee.nome.contains(nome))
         app.logger.info('Employees retrieved.')
-    return json.dumps([pessoa.serialize for pessoa in pessoas]), 200, {'Content-Type': 'application/json'}
+    total = pessoas.count()
+    pessoas = pessoas.paginate(int(page),int(size)).items
+    response = {
+        "items": [pessoa.serialize for pessoa in pessoas],
+        "page": page,
+        "size": size,
+        "total": total
+    }
+    return json.dumps(response), 200, {'Content-Type': 'application/json'}
 
 @app.route('/employee/cargos', methods=['GET'])
 def get_cargos():

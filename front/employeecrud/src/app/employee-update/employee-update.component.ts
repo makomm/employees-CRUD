@@ -22,11 +22,11 @@ export class EmployeeUpdateComponent implements OnInit {
 
     this.route.params.subscribe(params => {
       this.id = params["id"];
-      this.es.getEmployee(params["id"]).subscribe(c => {
+      this.es.getEmployee(params["id"]).subscribe((c: any) => {
         this.angForm = this.fb.group({
-          pessoa_nome: [c[0].nome, Validators.required],
-          pessoa_idade: [c[0].idade, Validators.required],
-          pessoa_cargo: [c[0].cargo, Validators.required]
+          pessoa_nome: [c.items[0].nome, Validators.required],
+          pessoa_idade: [c.items[0].idade, Validators.required],
+          pessoa_cargo: [c.items[0].cargo, Validators.required]
         });
       });
     });

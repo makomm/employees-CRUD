@@ -10,13 +10,18 @@ import { EmployeeService } from "../employee.service";
 export class EmployeeGetComponent implements OnInit {
   employees: Employee[];
   cargos: [];
+  filter: string;
   constructor(private es: EmployeeService) {}
-
+  length = 100;
+  pageSize = 10;
   filterEmployee() {
     const element = event.currentTarget as HTMLInputElement;
     const cargo = element.value;
-    this.es.getEmployees(cargo).subscribe((data: Employee[]) => {
-      this.employees = data;
+    this.filter = cargo;
+    this.es.getEmployees(cargo).subscribe((data: any) => {
+      this.employees = data.items;
+      this.length = data.total;
+      this.pageSize = data.size;
     });
   }
 
@@ -25,14 +30,22 @@ export class EmployeeGetComponent implements OnInit {
   }
 
   getData() {
-    this.es.getEmployees().subscribe((data: Employee[]) => {
-      this.employees = data;
+    this.es.getEmployees().subscribe((data: any) => {
+      this.employees = data.items;
+      this.length = data.total;
+      this.pageSize = data.size;
     });
     this.es.getCargos().subscribe((data: any) => {
       this.cargos = data.items;
     });
   }
-
+  changePage(event){
+    this.es.getEmployees(this.filter,event.pageIndex+1, event.pageSize).subscribe((data: any) => {
+      this.employees = data.items;
+      this.length = data.total;
+      this.pageSize = data.size;
+    });
+  }
   ngOnInit() {
     this.getData();
   }

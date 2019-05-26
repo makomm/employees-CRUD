@@ -1,18 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class EmployeeService {
-  uri = 'http://localhost:3000/employee';
-  apiKey = '46070D4BF934FB0D4B06D9E2C46E346944E322444900A435D7D9A95E6D7435F5';
-  requestOptions =  {                                                                                                                                                                                 
-    headers: new HttpHeaders({'Authorization':this.apiKey}), 
+  uri = "http://localhost:3000/employee";
+  apiKey = "46070D4BF934FB0D4B06D9E2C46E346944E322444900A435D7D9A95E6D7435F5";
+  requestOptions = {
+    headers: new HttpHeaders({ Authorization: this.apiKey })
   };
 
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   createEmployee(nome, idade, cargo) {
     const body = {
@@ -21,26 +20,24 @@ export class EmployeeService {
       cargo
     };
     return this.http.post(this.uri, body, this.requestOptions);
-      
   }
 
-  updateEmployee(nome, idade, cargo,id) {
+  updateEmployee(nome, idade, cargo, id) {
     const body = {
       nome,
       idade,
       cargo,
       id
     };
-    return this.http.put(this.uri, body,this.requestOptions);
-      
+    return this.http.put(this.uri, body, this.requestOptions);
   }
 
-  getEmployees(cargo = null) {
-    const params = cargo ? `?cargo=${cargo}` : '';
-    return this.http.get(`${this.uri}${params}`);
+  getEmployees(cargo = null, page = 1, size = 10) {
+    const params = cargo ? `?cargo=${cargo}&` : "?";
+    return this.http.get(`${this.uri}${params}page=${page}&size=${size}`);
   }
 
-  getEmployee(id=null){
+  getEmployee(id = null) {
     return this.http.get(`${this.uri}?id=${id}`);
   }
 
@@ -49,7 +46,9 @@ export class EmployeeService {
   }
 
   deleteEmployee(id = null) {
-    
-    return this.http.delete(`${this.uri}/${id}`,{...this.requestOptions,responseType:'text'});
+    return this.http.delete(`${this.uri}/${id}`, {
+      ...this.requestOptions,
+      responseType: "text"
+    });
   }
 }
