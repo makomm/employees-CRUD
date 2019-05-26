@@ -1,5 +1,4 @@
 #### TODO:
-## Add authentication to write/delete methods (POST, PUT, DELETE) and log
 ## Add size and pagination to get methods
 
 import os
@@ -10,6 +9,7 @@ from flask.logging import default_handler
 import logging
 from logging.handlers import RotatingFileHandler
 from models.employee import Employee, db
+from simple_auth.authorization import requires_auth
 
 app = Flask(__name__)
 CORS(app)
@@ -24,6 +24,7 @@ def emp_crud():
     return 'EMPLOYEES CRUD'
 
 @app.route('/employee', methods=['POST'])
+@requires_auth
 def create_employee():
     body = request.get_json()
     try:
@@ -40,6 +41,7 @@ def create_employee():
         return 'Bad Request', 400
 
 @app.route('/employee', methods=['PUT'])
+@requires_auth
 def update_employee():
     if not request.data:
         return 'Bad Request', 400
@@ -61,6 +63,7 @@ def update_employee():
         return 'Bad Request', 400
 
 @app.route('/employee/<int:id>', methods=['DELETE'])
+@requires_auth
 def del_employee(id):
     try:
         Employee.query.filter_by(_id=id).delete()
@@ -98,6 +101,7 @@ def get_cargos():
     return json.dumps({"items":cargos}), 200, {'Content-Type': 'application/json'}
 
 @app.route('/log')
+@requires_auth
 def method_name():
     return send_file('api.log', attachment_filename='api.log')
 	
