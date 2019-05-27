@@ -12,6 +12,7 @@ import { ActivatedRoute } from "@angular/router";
 export class EmployeeUpdateComponent implements OnInit {
   angForm: FormGroup;
   id: Number;
+  loading = false;
   constructor(
     private fb: FormBuilder,
     private es: EmployeeService,
@@ -22,12 +23,14 @@ export class EmployeeUpdateComponent implements OnInit {
 
     this.route.params.subscribe(params => {
       this.id = params["id"];
+      this.loading = true;
       this.es.getEmployee(params["id"]).subscribe((c: any) => {
         this.angForm = this.fb.group({
           pessoa_nome: [c.items[0].nome, Validators.required],
           pessoa_idade: [c.items[0].idade, Validators.required],
           pessoa_cargo: [c.items[0].cargo, Validators.required]
         });
+        this.loading = false;
       });
     });
   }
@@ -41,12 +44,17 @@ export class EmployeeUpdateComponent implements OnInit {
   }
 
   updateEmployee(pessoa_nome, pessoa_idade, pessoa_cargo) {
+    this.loading = true;
     this.es.updateEmployee(pessoa_nome, pessoa_idade, pessoa_cargo, this.id).subscribe(
       c => {
         this.openSnackBar("Atualizado", "Ok");
         this.angForm.reset();
+        this.loading = false;
       },
-      err => this.openSnackBar(err.message, "Ok")
+      err => {
+        this.loading = false;
+        this.openSnackBar(err.message, "Ok");
+      }
     );
   }
 

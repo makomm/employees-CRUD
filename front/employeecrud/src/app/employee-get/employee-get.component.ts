@@ -12,16 +12,19 @@ export class EmployeeGetComponent implements OnInit {
   cargos: [];
   filter: string;
   constructor(private es: EmployeeService) {}
-  length = 100;
+  length = 0;
   pageSize = 10;
+  loading = true;
   filterEmployee() {
     const element = event.currentTarget as HTMLInputElement;
     const cargo = element.value;
     this.filter = cargo;
+    this.loading = true;
     this.es.getEmployees(cargo).subscribe((data: any) => {
       this.employees = data.items;
       this.length = data.total;
       this.pageSize = data.size;
+      this.loading = false;
     });
   }
 
@@ -30,20 +33,24 @@ export class EmployeeGetComponent implements OnInit {
   }
 
   getData() {
+    this.loading = true;
     this.es.getEmployees().subscribe((data: any) => {
       this.employees = data.items;
       this.length = data.total;
       this.pageSize = data.size;
+      this.loading = false;
     });
     this.es.getCargos().subscribe((data: any) => {
       this.cargos = data.items;
     });
   }
   changePage(event){
+    this.loading = true;
     this.es.getEmployees(this.filter,event.pageIndex+1, event.pageSize).subscribe((data: any) => {
       this.employees = data.items;
       this.length = data.total;
       this.pageSize = data.size;
+      this.loading = false;
     });
   }
   ngOnInit() {

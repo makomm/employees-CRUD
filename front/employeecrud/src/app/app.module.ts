@@ -12,7 +12,7 @@ import { EmployeeService } from './employee.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSnackBarModule} from '@angular/material';
 import {MatPaginatorModule} from '@angular/material/paginator';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +28,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     HttpClientModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   providers: [ EmployeeService ],
   bootstrap: [ AppComponent ]

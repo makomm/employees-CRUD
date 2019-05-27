@@ -33,6 +33,7 @@
         <button type="submit" 
         (click)="createEmployee(pessoa_nome.value, pessoa_idade.value, pessoa_cargo.value)"
         class="btn btn-primary" [disabled]="angForm.pristine || angForm.invalid" >Cadastrar</button>
+        <mat-spinner *ngIf="loading"></mat-spinner>
       </div>
     </form>
   </div>

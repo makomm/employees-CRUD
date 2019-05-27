@@ -13,6 +13,7 @@
       <td colspan="2">Actions</td>
     </tr>
   </thead>
+  <mat-spinner *ngIf="loading"></mat-spinner>
 
   <tbody>
     <tr *ngFor="let employee of employees">

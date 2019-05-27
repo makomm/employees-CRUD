@@ -33,6 +33,7 @@
         <button type="submit" 
         (click)="updateEmployee(pessoa_nome.value, pessoa_idade.value, pessoa_cargo.value)"
         class="btn btn-primary" [disabled]="angForm.pristine || angForm.invalid" >Atualizar</button>
+        <mat-spinner *ngIf="loading"></mat-spinner>
       </div>
     </form>
   </div>

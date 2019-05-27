@@ -12,7 +12,7 @@ import { fbind } from 'q';
 })
 export class EmployeeAddComponent implements OnInit {
   angForm: FormGroup;
-
+  loading =  false;
   constructor(
     private fb: FormBuilder,
     private es: EmployeeService,
@@ -30,14 +30,19 @@ export class EmployeeAddComponent implements OnInit {
   }
 
   createEmployee(pessoa_nome, pessoa_idade, pessoa_cargo) {
+    this.loading=true;
     this.es
       .createEmployee(pessoa_nome, pessoa_idade, pessoa_cargo)
       .subscribe(
         c => {
+          this.loading=false;
           this.openSnackBar("Cadastrado", "Ok")
           this.angForm.reset();
         },
-        err => this.openSnackBar(err.message, "Ok")
+        err => {
+          this.loading=false;
+          this.openSnackBar(err.message, "Ok");
+        }
       );
   }
 
